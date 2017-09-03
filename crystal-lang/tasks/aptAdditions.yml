@@ -1,0 +1,22 @@
+---
+- name: Install Apt from Key server
+  apt_key:
+    keyserver: "{{ item.keyserver }}"
+    id: "{{ item.key }}"
+  with_items:
+    - { keyserver: 'keys.gnupg.net', key: '09617FD37CC06B54' }
+
+- name: Adding apt repositories.
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    filename: "{{ item.file }}"
+    update_cache: no
+  with_items:
+    - { repo: 'deb https://dist.crystal-lang.org/apt crystal main', file: 'crystal.list'}
+
+- include: updateApt.yml
+...
+
+
+

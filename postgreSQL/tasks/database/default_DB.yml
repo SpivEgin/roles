@@ -1,0 +1,20 @@
+---
+- include_vars: ../vars/Arastta_db_vars.yml
+- name: Create a new database with name {{ database_name }}
+  mysql_db:
+    name: "{{ database_name }}"
+    state: present
+
+- name: Creating Database {{ database_user }} for {{ database_name }}
+  mysql_user:
+    name: "{{ database_user }}"
+    password: "{{ database_user_pwd }}"
+    priv: '{{ database_name }}.*:ALL'
+    state: present
+
+- name: Turning off safemode
+  command: mysql -u "{{ database_user }}" -p"{{ database_user_pwd }}" "{{ database_name }}" -e "SET SQL_SAFE_UPDATES=0;"
+  # mysql -u "arastta_cart" -p"Ready-2-Go" "arastta_cart" -e "SET SQL_SAFE_UPDATES=0;"
+...
+
+#/var/www/mibew-2.2.0/configs

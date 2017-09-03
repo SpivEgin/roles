@@ -1,0 +1,5 @@
+---
+ipaddress: "10.71.34.10"
+FQDN: "debian.base"
+hostname: "debian"
+...

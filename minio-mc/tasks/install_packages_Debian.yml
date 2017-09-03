@@ -1,0 +1,8 @@
+---
+- name: Update Apt Cache
+  apt:
+    cache_valid_time: 86400
+    update_cache: yes
+- name: Install Debian packages
+  apt: name={{ item }} state=latest
+  with_items:

@@ -1,0 +1,10 @@
+---
+- name: Install Debian packages
+  apt: name={{ item }} state=latest
+  with_items:
+    - lxc
+    - debootstrap
+    - bridge-utils
+    - libvirt-daemon-system
+    - libvirt-dev
+    - libvirt-clients

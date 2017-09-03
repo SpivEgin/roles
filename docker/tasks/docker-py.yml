@@ -1,0 +1,8 @@
+---
+- name: Installing PIP Requirements
+  pip:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - docker-py
+...

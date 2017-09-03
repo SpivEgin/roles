@@ -1,0 +1,43 @@
+---
+- name: Installing Apt keys for Proxmox version 4
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  with_items:
+#    - 'http://download.proxmox.com/debian/proxmox-ve-release-5.x.gpg'
+    - 'http://download.proxmox.com/debian/key.asc'
+  when: ansible_distribution == 'Debian' and ansible_distribution_release == 'jessie'
+
+- name: Adding Proxmox 4.x repo for jessie.
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    filename: "{{ item.file }}"
+    update_cache: no
+  with_items:
+    - { repo: 'deb http://download.proxmox.com/debian jessie pve-no-subscription', file: 'pve-install-repo_v4'}
+  when: ansible_distribution == 'Debian' and ansible_distribution_release == 'jessie'
+
+- name: Installing Apt keys for Proxmox version 5
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  with_items:
+    - 'http://download.proxmox.com/debian/proxmox-ve-release-5.x.gpg'
+#    - 'http://download.proxmox.com/debian/key.asc'
+  when: ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch'
+
+- name: Adding Proxmox 5.x for stretch.
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    filename: "{{ item.file }}"
+    update_cache: no
+  with_items:
+    - { repo: 'deb http://download.proxmox.com/debian/pve stretch pve-no-subscription', file: 'pve-install-repo_v5'}
+  when: ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch'
+- include: updateApt.yml
+...
+
+
+

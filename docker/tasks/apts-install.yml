@@ -1,0 +1,9 @@
+---
+- name: Install apts pre-reqs
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - gnupg2
+    - software-properties-common
+...

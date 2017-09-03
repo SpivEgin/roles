@@ -1,0 +1,30 @@
+---
+- name: Remove Dir's
+  file:
+    path: "{{ item }}"
+    mode: 755
+    state: absent
+  with_items:
+    - /opt/rocket/
+
+- name: Creating Dir's
+  file:
+    path: "{{ item }}"
+    mode: 755
+    state: directory
+  with_items:
+    - /opt/rocket/
+
+- name: Downloading Rocket Container
+  get_url:
+    url: "{{item}}"
+    dest: /opt/rocket/
+  with_items:
+    - https://github.com/rkt/rkt/releases/download/v1.28.1/rkt_1.28.1-1_amd64.deb
+    - https://github.com/rkt/rkt/releases/download/v1.28.1/rkt_1.28.1-1_amd64.deb.asc
+
+- name: Install a Rocket .deb package
+  apt:
+    deb: /opt/rocket/rkt_1.28.1-1_amd64.deb
+
+...

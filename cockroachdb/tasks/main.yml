@@ -1,0 +1,21 @@
+---
+- name: Load in project specific vars
+  include_vars: "{{ vars_file }}"
+- name: Stopping Cockroach Services
+  service: name=cockroach state=stopped
+  ignore_errors: yes
+
+- include: users.yml
+- include: devKeys.yml
+- include: cockroach_Install.yml
+- include: CockroachNodes/master.yml
+  when: node_db == "0"
+- include: CockroachNodes/node1.yml
+  when: node_db == "1"
+- include: CockroachNodes/node2.yml
+  when: node_db == "2"
+
+- name: Stopping Cockroach Seervices
+  service: name=cockroach state=started enabled=yes
+
+...

@@ -1,0 +1,14 @@
+---
+# http://docs.ansible.com/ansible/latest/lineinfile_module.html#examples
+# Before 2.3, option 'dest', 'destfile' or 'name' was used instead of 'path'
+- lineinfile:
+    owner: "{{item}}"
+    path: "/home/{{item}}/.bashrc"
+    line: 'export PATH=/usr/lib/dart/bin:$PATH'
+  with_items:
+    - "{{ dart_users }}"
+- lineinfile:
+    path: "/root/.bashrc"
+    line: 'export PATH=/usr/lib/dart/bin:$PATH'
+  when: rt_usr
+...

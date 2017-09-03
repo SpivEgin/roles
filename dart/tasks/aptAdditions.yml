@@ -1,0 +1,23 @@
+---
+- name: Adding google Apt-key to Keystore
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  with_items:
+    - 'https://dl-ssl.google.com/linux/linux_signing_key.pub'
+
+
+- name: Adding Dartlang stable apt repositories.
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    filename: "{{ item.file }}"
+    update_cache: no
+  with_items:
+    - { repo: 'deb https://storage.googleapis.com/download.dartlang.org/linux/debian stable main', file: 'dart'}
+
+- include: updateApt.yml
+...
+
+
+

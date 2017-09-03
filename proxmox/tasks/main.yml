@@ -1,0 +1,16 @@
+---
+- include: aptAdditions.yml
+- name: Update all packages to the latest version
+  apt:
+    upgrade: dist
+- lineinfile:
+    path: /etc/hosts
+    line: "{{ipaddress}} {{FQDN}} {{hostname}}"
+- name: Restart server
+  command: shutdown -r +1m
+  async: 0
+  poll: 0
+  ignore_errors: true
+
+#- include: proxmox.yml
+...

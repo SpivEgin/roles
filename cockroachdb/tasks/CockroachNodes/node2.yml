@@ -1,0 +1,11 @@
+---
+- include_vars: ../vars/Node2.yml
+- name: Install systemd unit for Node {{ store_id }}
+  template:
+    src: templates/cockroach.service-addNode.j2
+    dest: /etc/systemd/system/cockroach.service
+    mode: "0755"
+  tags:
+    - cockroach_DB_Service
+#  when: ansible_eth0["ipv4"]["address"] == ip_address|string
+...

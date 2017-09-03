@@ -1,0 +1,5 @@
+---
+- include: apts-install.yml
+- include: golangBuildServer.yaml
+- include: addLineToFiles.yml
+...

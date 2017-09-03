@@ -1,0 +1,50 @@
+---
+- name: Remove Dir's
+  file:
+    path: "{{ item }}"
+    mode: 755
+    state: absent
+  with_items:
+    - /opt/docker/docker-machine
+
+- name: Creating Dir's
+  file:
+    path: "{{ item }}"
+    mode: 755
+    state: directory
+  with_items:
+    - /opt/docker/docker-machine
+    - /usr/bin/local
+    - /opt/t0/tmp/
+
+- name: Downloading Docker-machine
+  get_url:
+    url: https://github.com/docker/machine/releases/download/v0.12.2/docker-machine-Linux-x86_64
+    dest: /opt/t0/tmp/docker-machine
+    checksum: sha256:3c0a1a03653dff205f27bb178773f3c294319435a2589cf3cb4456423f8cef08
+
+#
+# curl -L https://github.com/docker/machine/releases/download/v0.12.2/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine &&
+#chmod +x /tmp/docker-machine &&
+#sudo cp /tmp/docker-machine /usr/local/bin/docker-machine
+
+- name: Coping Docker-machine to bin
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    remote_src: True
+    mode: "u=x,g=x,o=x"
+  with_items:
+    - { src: '/opt/t0/tmp/docker-machine', dest: '/opt/docker/docker-machine/docker-machine' }
+
+
+
+- name: Creating Sym Links docker-machine
+  file:
+    src: '{{ item.src }}'
+    dest: '/usr/bin/{{ item.dest }}'
+    state: link
+  with_items:
+    - { src: '/opt/docker/docker-machine/docker-machine', dest: 'docker-machine' }
+
+...

@@ -1,0 +1,6 @@
+---
+db_description: "Cockroach TLM DataStore"
+db_admin: 'www-data'
+cockroach_masterNode_ip: '192.168.1.103'
+
+...

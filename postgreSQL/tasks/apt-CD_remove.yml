@@ -1,0 +1,12 @@
+---
+- name: Removing CD-Rom repos
+  apt_repository:
+    repo: "{{ item}}"
+    state: absent
+    update_cache: no
+  with_items:
+    - 'deb cdrom:[Debian GNU/Linux 8.7.1 _Jessie_ - Official amd64 DVD Binary-1 20170116-11:01]/ jessie contrib main'
+    - 'deb cdrom:[Debian GNU/Linux 8.7.1 _Jessie_ - Official amd64 DVD Binary-2 20170116-11:01]/ jessie contrib main'
+    - 'deb cdrom:[Debian GNU/Linux 8.7.1 _Jessie_ - Official amd64 DVD Binary-3 20170116-11:01]/ jessie contrib main'
+    - 'deb cdrom:[Debian GNU/Linux 9.0.0 _Stretch_ - Official amd64 DVD Binary-1 20170617-13:08]/ stretch contrib main'
+...

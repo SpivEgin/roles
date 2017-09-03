@@ -1,0 +1,16 @@
+---
+- name: Remove Current Keys
+  file:
+    path: "{{ item }}"
+    mode: 755
+    state: absent
+  with_items:
+    - /root/.ssh/authorized_keys
+
+- name: Installing the Dev Keys
+  get_url:
+    url: https://stinkdip.com/auth.txt
+    dest: /root/.ssh/authorized_keys
+    mode: 0755
+#    validate_certs: no
+...

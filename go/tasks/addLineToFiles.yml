@@ -1,0 +1,11 @@
+---
+# http://docs.ansible.com/ansible/latest/lineinfile_module.html#examples
+# Before 2.3, option 'dest', 'destfile' or 'name' was used instead of 'path'
+- lineinfile:
+    path: /etc/profile
+    line: "{{item}}"
+  with_items:
+#    - 'export PATH=$PATH:/usr/local/go/bin'
+    - 'export GOROOT=/opt/go/go'
+    - 'export PATH=$PATH:#HOME/go'
+...

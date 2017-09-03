@@ -1,0 +1,71 @@
+---
+- include_vars: ../vars/main.yml
+- name: Creating Dir's
+  file:
+    path: "{{ item }}"
+#    owner: www-data
+#    group: www-data
+    mode: 755
+    state: directory
+  with_items:
+    - /etc/cockroackdb
+
+- name: Installing CockroachDB and {{ zipfile }}
+  unarchive:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: "../files/cockroach-latest.linux-amd64.tgz", dest: "/etc/cockroackdb" }
+
+#- name: Install bash start Caddy file
+#  template:
+#    src: ../templates/caddy_start.sh.j2
+#    dest: /etc/caddy/caddy_start
+#    mode: "0744"
+
+
+#- name: Making sure Ex works
+#  file:
+#    path: '/etc/{{ item.src }}'
+#    state: touch
+#    mode:  "o+x"
+#  with_items:
+#    - { src: 'hugo/hugo'}
+#    - { src: 'caddy/caddy'}
+#    - { src: 'caddy/caddy_start'}
+
+- name: Creating Sym Links
+  file:
+    src: '/etc/{{ item.src }}'
+    dest: '/usr/bin/{{ item.dest }}'
+    state: link
+  with_items:
+    - { src: 'cockroackdb/cockroach-latest.linux-amd64/cockroach', dest: 'cockroach' }
+#- name: Coping Caddy to bin
+#  copy:
+#    src: /etc/caddy/caddy
+#    dest: /usr/local/bin/
+#    owner: www-data
+#    group: www-data
+#    mode: 0744
+#    remote_src: True
+#
+#- include: users.yml
+#
+#
+#- name: Install Caddyfile
+#  template:
+#    src: ../templates/Caddyfile.j2
+#    dest: /opt/caddy/Caddyfile
+#    mode: "0744"
+#
+#- name: Install systemd unit
+#  template:
+#    src: ../templates/caddy.service.j2
+#    dest: /etc/systemd/system/caddy.service
+#    mode: "0744"
+#- command: "systemctl daemon-reload"
+#- name: Start Caddy
+#  service: name=caddy state=started
+
+...

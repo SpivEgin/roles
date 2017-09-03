@@ -1,0 +1,19 @@
+---
+- hosts: minio
+  vars:
+    access_key: 'cVcx7bxk3RhA3yLTa4zb'
+    secret_key: 'NEtaCxhJUtPbPUjvnXeufhKLnanVA7F4rfg4U7Cq'
+    server_name: 192.168.1.48
+    caddy_version: '0.10.3'
+    data_store: "/opt/data"
+    caddy_user: "jazzsquare"
+    caddy_group: "sudo"
+    minio_user: "rebelhurricane"
+    minio_group: "sudo"
+  tasks:
+  - include: tasks/main.yml
+  roles:
+  - qusers
+  - caddy
+
+...

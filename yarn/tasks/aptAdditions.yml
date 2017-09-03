@@ -1,0 +1,23 @@
+---
+- name: Installing Yarn Apt keys
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  with_items:
+    - 'https://dl.yarnpkg.com/debian/pubkey.gpg'
+
+- name: Adding apt repositories.
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    filename: "{{ item.file }}"
+    update_cache: no
+  with_items:
+    - { repo: 'deb https://dl.yarnpkg.com/debian/ stable main', file: 'yarn.list'}
+
+- include: updateApt.yml
+...
+#curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+#echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
+

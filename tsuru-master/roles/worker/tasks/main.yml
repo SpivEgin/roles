@@ -1,0 +1,12 @@
+---
+- name: setup disk
+  tags:
+    - tsuru_disk
+    - tsuru_worker
+  include: disk.yml
+
+- name: setup container service
+  tags:
+    - tsuru_container
+    - tsuru_worker
+  include: container.yml

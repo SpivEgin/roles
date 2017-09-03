@@ -1,0 +1,6 @@
+---
+- name: Install dokku plugin:install-dependencies --core
+  command: dokku plugin:install-dependencies --core
+  args:
+    chdir: /root/
+...

@@ -1,0 +1,8 @@
+---
+- hosts: default
+  vars:
+  - include_vars: vars/main.yml
+  remote_user: root
+  tasks:
+  - include: tasks/main.yml
+...

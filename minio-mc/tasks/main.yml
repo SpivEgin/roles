@@ -1,0 +1,4 @@
+---
+- include: minio-mc.yml
+- include: mc-config.yml
+...

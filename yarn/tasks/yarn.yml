@@ -1,0 +1,5 @@
+---
+- name: Installing Yarn Debian packages
+  apt: name={{ item }} state=latest
+  with_items:
+    - yarn

@@ -1,0 +1,6 @@
+---
+- name: Installing Docker-CE
+  apt: name={{ item }} state=latest
+  with_items:
+    - docker-ce
+

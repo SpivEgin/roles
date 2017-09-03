@@ -1,0 +1,32 @@
+---
+- name: Installing Apt keys
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  with_items:
+    - 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'
+
+- name: Adding apt for jessie.
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    filename: "{{ item.file }}"
+    update_cache: no
+  with_items:
+    - { repo: 'deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main', file: 'postgresql'}
+  when: ansible_distribution == 'Debian' and ansible_distribution_release == 'jessie'
+
+- name: Adding apt for stretch.
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    filename: "{{ item.file }}"
+    update_cache: no
+  with_items:
+    - { repo: 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main', file: 'postgresql'}
+  when: ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch'
+- include: updateApt.yml
+...
+
+
+

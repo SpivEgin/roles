@@ -1,0 +1,25 @@
+---
+- name: setup container service
+  tags: tsuru_container
+  include_role:
+    name: stone-payments.docker
+  vars:
+    docker_vg:
+      name: "{{ tsuruWorker_nameVG }}"
+      create: false
+    docker_pool:
+      name: "pool"
+      size: "{{ tsuruWorker_sizePool }}"
+      grow: true
+      autoextend:
+        enabled: false
+    docker_data:
+      enabled: true
+      name: "docker"
+      size: "{{ tsuruWorker_sizeData }}"
+    docker_tls:
+      enabled: "{{ tsuru_tlsDockerEnabled }}"
+      ca: "{{ tsuru_tlsDockerCA }}"
+      cert: "{{ tsuru_tlsDockerCert }}"
+      key: "{{ tsuru_tlsDockerKey }}"
+    docker_config: "{{ tsuru_docker_defaults | combine(tsuru_docker_config, recursive=true) }}"

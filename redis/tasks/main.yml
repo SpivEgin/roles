@@ -1,0 +1,44 @@
+- name: Install Redis
+  apt: name=redis-server state=present update_cache=yes cache_valid_time={{ apt_cache_valid_time }}
+  notify: restart redis
+
+- name: Configuring Redis
+  template:
+    src: redis.conf.j2
+    dest: /etc/redis/redis.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart redis
+
+- name: Set Redis ulimit
+  lineinfile:
+    dest: /etc/default/redis-server
+    regexp: '^\s*#?\s*ULIMIT\s*=.*$'
+    insertafter: EOF
+    line: "ULIMIT={{ redis_ulimit }}"
+
+- name: Sysctl vm.swappiness
+  sysctl:
+    name: vm.swappiness
+    value: 0
+    reload: true
+    state: present
+  when: sysctl_vm_swappiness
+
+- name: Sysctl vm.overcommit_memory
+  sysctl:
+    name: vm.overcommit_memory
+    value: 1
+    reload: true
+    state: present
+  when: sysctl_vm_overcommit_memory
+
+- name: Diable transparent_hugepage
+  shell: "echo never > {{ item }}"
+  with_items:
+    - /sys/kernel/mm/transparent_hugepage/enabled
+    - /sys/kernel/mm/transparent_hugepage/defrag
+
+- name: Flush handlers
+  meta: flush_handlers

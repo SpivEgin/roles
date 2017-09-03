@@ -1,0 +1,23 @@
+---
+- name: Installing LemonLDAP Apt keys
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  with_items:
+    - 'https://lemonldap-ng.org/_media/rpm-gpg-key-ow2'
+
+- name: Adding LemonLDAP repos
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    filename: "{{ item.file }}"
+    update_cache: no
+  with_items:
+    - { repo: 'deb https://lemonldap-ng.org/deb stable main', file: 'lemonldap'}
+    - { repo: 'deb-src https://lemonldap-ng.org/deb stable main', file: 'lemonldap_src'}
+
+- include: updateApt.yml
+...
+
+
+

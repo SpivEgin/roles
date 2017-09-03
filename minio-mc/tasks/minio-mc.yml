@@ -1,0 +1,43 @@
+---
+- name: Clean Slate Remove Dir's
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /opt/minio
+
+- name: Starting to Creating Directory
+  file:
+    path: "{{ item }}"
+    owner: "{{mc_user}}"
+    group: "{{mc_group}}"
+    mode: 755
+    state: directory
+  with_items:
+    - /opt/minio
+
+
+- name: Installing Minio-mc Minio client
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: "../files/mc", dest: "/opt/minio/mc" }
+
+- name: Making file executable
+  file:
+    path: '/opt/{{ item.src }}'
+    state: touch
+    mode:  "o+x"
+  with_items:
+    - { src: 'minio/mc'}
+
+- name: Creating Sym Links
+  file:
+    src: '/opt/{{ item.src }}'
+    dest: '/usr/bin/{{ item.dest }}'
+    state: link
+  with_items:
+    - { src: 'minio/mc', dest: 'mc' }
+
+...

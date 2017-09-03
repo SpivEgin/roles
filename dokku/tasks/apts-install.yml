@@ -1,0 +1,8 @@
+---
+- name: Install apts pre-reqs
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - debian-archive-keyring
+...

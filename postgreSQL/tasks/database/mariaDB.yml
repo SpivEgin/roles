@@ -1,0 +1,21 @@
+---
+#- name: Setting up Root DB Password
+- debconf:
+    name: mariadb-server
+    question: mariadb-server mysql-server/root_password
+    value: "{{ db_pass }}"
+    vtype: password
+
+- debconf:
+    name: mariadb-server
+    question: mariadb-server mysql-server/root_password_again
+    value: "{{ db_pass }}"
+    vtype: password
+
+- name: Installing MariaDB Server and Client software
+  apt: name={{ item }} state=present
+  with_items:
+    - mariadb-server
+    - mariadb-client
+    - python-mysqldb
+...

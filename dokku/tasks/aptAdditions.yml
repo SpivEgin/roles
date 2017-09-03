@@ -1,0 +1,21 @@
+---
+- name: Installing Apt keys
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  with_items:
+    - 'https://packagecloud.io/dokku/dokku/gpgkey'
+
+- name: Adding Distro independent
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    filename: "{{ item.file }}"
+    update_cache: no
+  with_items:
+    - { repo: 'deb https://packagecloud.io/dokku/dokku/ubuntu/ trusty main', file: 'dokku_dokku'}
+    - { repo: 'deb-src https://packagecloud.io/dokku/dokku/ubuntu/ trusty main', file: 'dokku_dokku-src'}
+...
+
+
+

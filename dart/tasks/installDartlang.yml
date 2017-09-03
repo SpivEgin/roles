@@ -1,0 +1,5 @@
+---
+- name: Installing Dartlang from google Repo
+  apt: name={{ item }} state=latest
+  with_items:
+    - dart

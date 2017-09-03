@@ -1,0 +1,22 @@
+---
+- name: Installing Apt keys
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  with_items:
+    - ' https://download.docker.com/linux/debian/gpg'
+
+- name: Adding Distro independent
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    filename: "{{ item.file }}"
+    update_cache: no
+  with_items:
+    - { repo: 'deb https://download.docker.com/linux/debian {{ansible_distribution_release}} stable', file: 'docker'}
+#    - { repo: 'deb https://download.docker.com/linux/debian {{ansible_distribution_release}} stable', file: 'docker.list'}
+
+- include: updateApt.yml
+...
+
+

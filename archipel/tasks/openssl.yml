@@ -1,0 +1,18 @@
+---
+- name: Creating  Dir's
+  file:
+    path: "{{ item }}"
+    mode: 755
+    state: directory
+  with_items:
+    - /etc/ssl/public/
+
+- name: Genrating Private Key
+  openssl_privatekey:
+    path: /etc/ssl/private/{{FQDN}}.pem
+    size: 4096
+- name: Generating Public Key
+  openssl_publickey:
+    path: /etc/ssl/public/{{FQDN}}.pem
+    privatekey_path: /etc/ssl/private/{{FQDN}}.pem
+...

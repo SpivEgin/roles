@@ -1,0 +1,40 @@
+---
+- name: Update all packages to the latest version
+  apt:
+    upgrade: dist
+- name: Restart server
+  command: shutdown -r +1m
+  async: 0
+  poll: 0
+  ignore_errors: true
+- name: Wait for server to restart
+  local_action:
+    module: wait_for
+      host={{ inventory_hostname }}
+      port=22
+      delay=1
+      timeout=300
+
+- name: Install Debian packages
+  apt: name={{ item }} state=present
+  with_items:
+    - proxmox-ve
+    - postfix
+    - open-iscsi
+- name: Rebooting server
+  command: reboot now
+- name: Wait for server to restart
+  local_action:
+    module: wait_for
+      host={{ inventory_hostname }}
+      port=22
+      delay=1
+      timeout=300
+
+- name: Removing unessery files
+  apt: name={{ item }} state=absent
+  with_items:
+    - os-prober
+    - linux-image-amd64
+    - linux-image-4.9.0-3-amd64
+

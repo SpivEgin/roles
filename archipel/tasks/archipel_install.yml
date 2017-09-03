@@ -1,0 +1,21 @@
+---
+- name: Next clone the Archipel repository
+  git:
+    repo: https://github.com/ArchipelProject/Archipel.git
+    dest: /opt/Archipel
+    clone: yes
+- name: Run pull.sh to get submodules
+  command: "./pull.sh"
+  args:
+    chdir: /opt/Archipel/
+- name: Build the Central Agent in debug mode
+  command: "./buildCentralAgent -d"
+  args:
+    chdir: /opt/Archipel/ArchipelAgent/
+- name: Create the pubsub node for central agent
+  command: "archipel-centralagentnode --jid=admin@{{FQDN}} --password={{admin_password}} --create"
+  ignore_errors: yes
+- name: Finalize the installation by typing
+  command: "archipel-central-agent-initinstall -x {{FQDN}}"
+  ignore_errors: yes
+...

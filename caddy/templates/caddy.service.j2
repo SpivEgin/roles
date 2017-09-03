@@ -1,0 +1,25 @@
+[Unit]
+Description=Caddy Webserver
+Documentation=https://caddyserver.com/
+After=network.target
+After=cockpit.service
+
+[Service]
+Restart=5
+StartLimitInterval=86400
+StartLimitBurst=5
+TimeoutStartSec=300s
+User={{caddy_user}}
+Group={{caddy_group}}
+Environment=HOME=/opt/caddy
+WorkingDirectory=/opt/caddy
+LimitNOFILE=32786
+PIDFile=/run/caddy.pid
+ExecStart=/etc/caddy/caddy -agree=true -email=ssl@{{ server_name }} -pidfile=/run/caddy.pid -conf=/opt/caddy/Caddyfile -log=/var/log/caddy/server.log
+ExecStartPre=/bin/chown www-data:www-data /var/log/caddy -R
+ExecStartPre=/bin/chown www-data:www-data /opt/caddy -R
+ExecStartPre=/sbin/setcap 'cap_net_bind_service=+ep' /etc/caddy/caddy
+
+PermissionsStartOnly=true
+[Install]
+WantedBy=multi-user.target

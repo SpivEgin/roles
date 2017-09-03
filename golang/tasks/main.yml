@@ -1,0 +1,4 @@
+---
+- include: golang_install.yml
+- include: addLineToFiles.yml
+...

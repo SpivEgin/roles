@@ -1,0 +1,4 @@
+---
+- name: Install LemonLDAP for Nginx Debian packages
+  apt: name={{ item }} state=latest
+  with_items:

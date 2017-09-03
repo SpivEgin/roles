@@ -1,0 +1,20 @@
+---
+- name: Install systemd unit
+  template:
+    src: ../templates/cockpit.conf.j2
+    dest: /etc/cockpit/cockpit.conf
+    mode: "0744"
+- name: SystemD Reload for Cockpit
+  command: "systemctl daemon-reload"
+- name: Enabling Cockpit
+  command: "systemctl enable cockpit.service"
+- name: Stopping Cockpit Service
+  service: name={{item.name}} state={{item.state}}
+  with_items:
+    - {name: 'cockpit', state: 'stopped'}
+- name: Starting Cockpit Service
+  service: name={{item.name}} state={{item.state}}
+  with_items:
+    - {name: 'cockpit', state: 'started'}
+
+...

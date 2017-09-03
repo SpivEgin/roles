@@ -1,0 +1,31 @@
+---
+- name: Stopping Ejabbered
+  systemd:
+    state: stopped
+    name: ejabberd
+- name: Backup ejabberd configure
+  copy:
+    src: /etc/ejabberd/ejabberd.yml
+    dest: /etc/ejabberd/ejabberd.yml.old
+    remote_src: True
+#  ignore_errors: yes
+- name: Removing ejabberd configuration file
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /etc/ejabberd/ejabberd.yml
+
+- name: Configuring ejabberd
+  template:
+    src: ../templates/ejabberd.yml.j2
+    dest: /etc/ejabberd/ejabberd.yml
+    owner: ejabberd
+    group: ejabberd
+    mode: "0744"
+- name: Stopping Ejabbered
+  systemd:
+    state: started
+    name: ejabberd
+
+...

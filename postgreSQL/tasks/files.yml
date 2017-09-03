@@ -1,0 +1,90 @@
+---
+- include_vars: ../vars/main.yml
+- name: Remove Dir's
+  file:
+    path: "{{ item }}"
+    owner: www-data
+    group: www-data
+    mode: 755
+    state: absent
+  with_items:
+    - /etc/caddy
+
+- name: Creating Dir's
+  file:
+    path: "{{ item }}"
+    owner: www-data
+    group: www-data
+    mode: 755
+    state: directory
+  with_items:
+    - /etc/caddy
+    - /opt/ssl/caddy
+    - /var/www
+    - /etc/hugo
+    - /var/www/{{ zipfile }}
+    - /usr/bin/local
+    - /opt/caddy
+    - /var/log/caddy
+
+- name: Installing Caddy, hugo and {{ zipfile }}
+  unarchive:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: "../files/caddy_linux_amd64_custom.tar.gz", dest: "/etc/caddy" }
+    - { src: "../files/hugo.zip", dest: "/etc/hugo"}
+    - { src: "../files/{{ zipfile }}.zip", dest: "/var/www/{{ zipfile }}"}
+
+- name: Install bash start Caddy file
+  template:
+    src: ../templates/caddy_start.sh.j2
+    dest: /etc/caddy/caddy_start
+    mode: "0744"
+
+
+- name: Making sure Ex works
+  file:
+    path: '/etc/{{ item.src }}'
+    state: touch
+    mode:  "o+x"
+  with_items:
+    - { src: 'hugo/hugo'}
+    - { src: 'caddy/caddy'}
+    - { src: 'caddy/caddy_start'}
+
+- name: Creating Sym Links
+  file:
+    src: '/etc/{{ item.src }}'
+    dest: '/usr/bin/{{ item.dest }}'
+    state: link
+  with_items:
+    - { src: 'hugo/hugo', dest: 'hugo' }
+- name: Coping Caddy to bin
+  copy:
+    src: /etc/caddy/caddy
+    dest: /usr/local/bin/
+    owner: www-data
+    group: www-data
+    mode: 0744
+    remote_src: True
+
+- include: users.yml
+
+
+- name: Install Caddyfile
+  template:
+    src: ../templates/Caddyfile.j2
+    dest: /opt/caddy/Caddyfile
+    mode: "0744"
+
+- name: Install systemd unit
+  template:
+    src: ../templates/caddy.service.j2
+    dest: /etc/systemd/system/caddy.service
+    mode: "0744"
+- command: "systemctl daemon-reload"
+- name: Start Caddy
+  service: name=caddy state=started
+
+...

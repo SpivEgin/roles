@@ -1,0 +1,18 @@
+---
+# http://docs.ansible.com/ansible/latest/lineinfile_module.html#examples
+# Before 2.3, option 'dest', 'destfile' or 'name' was used instead of 'path'
+- name: Adding Entry {{FQDN}} to host file
+  lineinfile:
+   path: /etc/hosts
+   line: '{{ipaddress}} {{FQDN}} hostname'
+
+#- lineinfile:
+#    path: /etc/ejabberd/ejabberd.yaml
+#    regexp: '^FQDN '
+#    insertafter: '^{{FQDN}}'
+- name: Erlang node Listing port
+  lineinfile:
+    path: /etc/ejabberd/ejabberdctl.cfg
+    regexp: '^#INET_DIST_INTERFACE=127\.0\.0\.1'
+    line: '^#INET_DIST_INTERFACE={{FQDN}}'
+...

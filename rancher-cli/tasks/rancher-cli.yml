@@ -1,0 +1,53 @@
+---
+- include_vars: ../vars/main.yml
+- name: Remove Dir's
+  file:
+    path: "{{ item }}"
+    mode: 755
+    state: absent
+  with_items:
+    - /opt/docker/rancher
+
+- name: Creating Dir's
+  file:
+    path: "{{ item }}"
+    mode: 755
+    state: directory
+  with_items:
+    - /opt/docker/rancher
+    - /usr/bin/local
+    - /opt/t0/tmp/
+
+- name: Downloading Rancher-CLI
+  get_url:
+    url: https://github.com/rancher/cli/releases/download/v0.6.3/rancher-linux-amd64-v{{version}}.tar.xz
+    dest: /opt/t0/tmp/rancher-linux-amd64-v{{version}}.tar.xz
+
+- name: Unarciving rancher-linux-amd64-v{{version}}.tar.xz
+  unarchive:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    remote_src: True
+  with_items:
+    - { src: "/opt/t0/tmp/rancher-linux-amd64-v{{version}}.tar.xz", dest: "/opt/docker/rancher" }
+
+- name: Coping Rancher-CLI to bin
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    remote_src: True
+    mode: "u=x,g=x,o=x"
+  with_items:
+    - { src: '/opt/docker/rancher/rancher-v0.6.3/rancher', dest: '/opt/docker/rancher/rancher' }
+
+
+
+- name: Creating Sym Links Rancher-CLI
+  file:
+    src: '{{ item.src }}'
+    dest: '/usr/bin/{{ item.dest }}'
+    state: link
+  with_items:
+    - { src: '/opt/docker/rancher/rancher', dest: 'rancher' }
+
+...

@@ -1,0 +1,19 @@
+---
+- include_vars: ../vars/main.yml
+- name: Creating Dir's for Laminar
+  file:
+    path: "{{ item }}"
+    mode: 755
+    state: directory
+  with_items:
+    - /opt/t0/tmp/
+
+- name: Coping Laminar to bin
+  copy:
+    src: files/laminar-{{version}}-amd64.deb
+    dest: /opt/t0/tmp/
+
+- name: Installing Laminar a .deb package
+  apt:
+    deb: /opt/t0/tmp/laminar-{{version}}-amd64.deb
+...

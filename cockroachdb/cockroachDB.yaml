@@ -1,0 +1,15 @@
+---
+- hosts: Cockroach
+  vars:
+    db_admin: db_user
+    db_groups: cockroach_db
+    db_passwd: $6$T9b111Kl.d$FQVBjfi7IVkcuhcth.VVhQzwirea4EB3.mSUiU/2ULjnD6hKXPplpJ92I5P6rWekITsEA8Saf1qjOogMZQ75n0
+    db_description: CockroachDB Install, golang
+    cockroach_masterNode_ip: '192.168.1.103'
+    cockroachDBversion: '1.0.1a'
+    insecure: "--insecure"
+    node: "0"
+  tasks:
+  - include: tasks/main.yml
+
+...

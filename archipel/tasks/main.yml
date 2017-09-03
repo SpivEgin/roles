@@ -1,0 +1,7 @@
+---
+- include: python_debs.yml
+- include: openssl.yml
+- include: edit_hosts_erlang.yml
+- include: ejabberd_configure.yml
+- include: archipel_install.yml
+...

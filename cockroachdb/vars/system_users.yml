@@ -1,0 +1,38 @@
+---
+sys_user:
+  - purpleteelpitz
+  - fuschiaatinuma
+  - blotchsatyrbedim
+  - agocoopira
+  - almaelmmusty
+  - crafttubedacca
+  - milechiclanka
+sys_user_pwd:
+  - $6$GFdLrJ5/RR$ni1TxGTqApBdnXuxXCA1QdlzudhSQqUMX81FOCb1bxorrjPPzOiGBHs6xY40zqGKx8Q9YtZDvIyb/Y5I8yviG/
+  - $6$tM.3CQsxgUD6YR$TdyDPIpdogLiAhdx19v8NCfSqf2ljV9MrPS6kqoPAxSms4Yhdy0DAZh9QHRybWfzAoNcKcRogFekm9mN0PPvA0
+  - $6$CH9JMcJxoCjnEjdv$2TW3QSSYBou3/Zwd/T2M2ZHXIrKr28kp4vfw0mxTeWMgpbN9JbU8PKjEh5F4MBYvaIe8xD9nQjC8KfborpX2z0
+  - $6$vlSVpNuwZSW$hgJzYgI4Jb/F21egT6uxLPiCCmOv.ecxcWxmay953yj/trZYAbrf88v9AZGqnnwfDcMDdE8.qvc1y8Vssucfz1
+  - $6$ywjL1TrQ3JCo$lT0npD0mLrRsy/m2zgMKkWIJ/lmS3XmHCiXfZ/NqzVoBw0s4qtETbx9v3TEl0LCT6IFzsd6IThT1AEDsT9WJr.
+  - $6$dunzLLTpG3Eyl5B$pavfOmwADU0r/0A.OPo3BLQGHnSG6nZ0E8pCQC5Qm9dpdjoPlTLAJHppbZc5mlzpmdf4u4lq9d8EWR2GAkeXt1
+  - $6$iC5bjpM4k$xTlcZ8QOxhW6jGjbqgdiHcWXS9eRpbayOUiNKBNrnucUcGoJZz4CH/HD.gjbnXSqPFMNmEW8/DSgexKLXmFv/1
+service_user:
+  - www-data
+gogs_user:
+  - purpleteelpitz
+  - fuschiaatinuma
+  - blotchsatyrbedim
+  - www-data
+
+gogs_userSSH:
+  - purpleteelpitz
+  - fuschiaatinuma
+  - blotchsatyrbedim
+
+...
+#  - qf3R-61Eih7-chawXjTg-ph
+#  - mXoX-kurdTwy4-snugLFWe-daffy
+#  - HsAe-henry4xsd-geldJeiP-2i
+#  - MJta-cos9dHn-gadgetofqK-45
+#  - qcmX-trawlmyc3-ussrVCTM-nasa
+#  - Jume-fieryN4F9-yyyy7wt9-hying
+#  - 3Mnf-felicer94K-toughdXPr-andy

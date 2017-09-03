@@ -1,0 +1,7 @@
+---
+- name: Install KVM Debian packages
+  apt: name={{ item }} state=latest
+  with_items:
+    - qemu-kvm
+    - libvirt-clients
+    - libvirt-daemon-system

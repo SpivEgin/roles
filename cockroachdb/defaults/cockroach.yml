@@ -1,0 +1,30 @@
+---
+## Database vars
+# Cockroach service user
+db_admin: purpleteelpitz
+db_groups: cockroach
+db_passwd: $6$T9b111Kl.d$FQVBjfi7IVkcuhcth.VVhQzwirea4EB3.mSUiU/2ULjnD6hKXPplpJ92I5P6rWekITsEA8Saf1qjOogMZQ75n0
+# Database name
+# Vars for database
+db_usr:
+  - tlm_django
+db_pwd:
+  - tlmReady-2-Go
+db_name:
+  - tlm_django
+domain_name:
+  - tpnfc.net
+  - tpnfc.us
+salt_cookie: A7rmz9sisra7o3daFCkd
+# Service Description
+db_description: CockroachDB Install, golang
+
+#Ip address for master node
+cockroach_masterNode_ip: '192.168.1.80'
+cockroachDBversion: "1.0.1a"
+insecure: "--insecure"
+# Node id 0 == master
+node_db: "0"
+# host main ip address public if on internet
+ip_address: "{{hosts}}"
+...

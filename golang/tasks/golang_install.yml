@@ -1,0 +1,90 @@
+---
+- name: Remove Dirs
+  file:
+    path: "{{ item }}"
+    mode: 755
+    state: absent
+  with_items:
+    - /etc/go
+    - /opt/ssl/go
+    - /usr/local/bin/go
+    - /opt/go
+    - /user/local/go
+    - /var/log/go
+    - /usr/local/bin/go
+    - /home/source/
+
+- name: Creating Dir's
+  file:
+    path: "{{ item }}"
+    mode: 755
+    state: directory
+  with_items:
+    - /etc/go
+    - /opt/ssl/go
+    - /usr/local/bin
+    - /opt/go
+    - /var/log/go
+    - /opt/Go/tmp
+    - /home/source/
+
+- name: SymLinking Golang file to goRoot /usr/local/go
+  file:
+    src: '/opt/{{ item.src }}'
+    dest: '{{ item.lnk }}'
+    mode: 0755
+    state: link
+  with_items:
+    - { src: 'go', lnk: '/usr/local/go'}
+
+- name: Download CrokroachDB binary
+  stat:
+    path: /opt/Go/tmp/go{{version}}.linux-amd64.tar.gz
+  register: golang
+
+- name: Check file system
+  stat:
+    path: /opt/go
+  register: golang
+
+- name: Build and downloading Golang Server
+  get_url:
+    url: https://storage.googleapis.com/golang/go{{version}}.linux-amd64.tar.gz
+    dest: /opt/Go/tmp/
+    mode: 0755
+  when: golang.stat.exists != false
+
+- name: Installing Golang DB Core
+  unarchive:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    remote_src: yes
+  with_items:
+    - { src: "/opt/Go/tmp/go{{version}}.linux-amd64.tar.gz", dest: "/opt/" }
+- name: Check file system
+  stat:
+    path: /opt/go/pth.txt
+  register: path
+
+- name: Applying Golang Paths
+  shell: echo "\nexport GOROOT=/opt/go/\nexport PATH=$PATH:$GOROOT/home/source \nexport PATH=$PATH:/opt/go/bin" >> /etc/profile
+  when: path.stat.exists != True
+
+- name: Create Addition of Env Variable
+  shell: echo "\nexport GOROOT=/opt/go/\nexport PATH=$PATH:$GOROOT/home/source \nexport PATH=$PATH:/opt/go/bin" >> /opt/go/pth.txt
+  when: path.stat.exists != True
+- name: SymLinking Golang file to /bin
+  file:
+    src: '/opt/{{ item.src }}'
+    dest: '/bin/{{ item.lnk }}'
+    mode: 0755
+    state: link
+  with_items:
+    - { src: 'go/bin/go', lnk: 'go'}
+    - { src: 'go/bin/godoc', lnk: 'godoc'}
+    - { src: 'go/bin/gofmt', lnk: 'gofmt'}
+...
+#export GOROOT=$HOME/go1.X
+#export PATH=$PATH:$GOROOT/bin
+#
+#bash -c 'echo -e "\nserver.id='$1'" >> file.properties'

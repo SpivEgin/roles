@@ -1,0 +1,14 @@
+---
+# File handlers/main.yml Handlers for Hubot role
+
+- name: enable caddy
+  service: name=caddy enabled=true
+
+- name: restart caddy
+  service: name=caddy state=restarted
+
+- name: start caddy
+  service: name=caddy state=started
+
+- name: stop caddy
+  service: name=caddy state=stopped

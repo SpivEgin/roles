@@ -1,0 +1,6 @@
+---
+server_name: "example.com"
+caddy_version: '0.10.3'
+caddy_user: "www-data"
+caddy_group: "www-data"
+...

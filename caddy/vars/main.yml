@@ -1,0 +1,8 @@
+---
+domain: "communecc.ga"
+domains: "162.243.172.32"
+zipfile: "default"
+tls_off:
+  - "tls off"
+
+...

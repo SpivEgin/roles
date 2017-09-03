@@ -1,0 +1,74 @@
+---
+- name: Creating Dir's
+  file:
+    path: "{{ item }}"
+    owner: "{{caddy_user}}"
+    group: "{{caddy_group}}"
+    mode: 755
+    state: directory
+  with_items:
+    - /etc/caddy
+    - /opt/ssl/caddy
+    - /var/log/caddy
+    - /opt/caddy/tmp
+
+- name: Build and downloading Caddy Server
+  copy:
+    src: ../files/caddy_v0.10.3_linux_amd64_custom.tar.gz
+    dest: /opt/caddy/tmp/
+    owner: "{{caddy_user}}"
+    group: "{{caddy_group}}"
+    mode: 0744
+
+- name: Installing Caddy, hugo and {{ zipfile }}
+  unarchive:
+    owner: "{{caddy_user}}"
+    group: "{{caddy_group}}"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    remote_src: yes
+  with_items:
+    - { src: "/opt/caddy/tmp/caddy_v{{ caddy_version }}_linux_amd64_custom.tar.gz", dest: "/etc/caddy" }
+
+- name: Making sure Ex works
+  file:
+    owner: "{{caddy_user}}"
+    group: "{{caddy_group}}"
+    path: '/etc/{{ item.src }}'
+    state: touch
+    mode:  "g+x"
+  with_items:
+    - { src: 'caddy/caddy'}
+    - { src: 'caddy/caddy_start'}
+
+- name: Coping Caddy to bin
+  copy:
+    src: /etc/caddy/caddy
+    dest: /usr/local/bin/
+    mode: 0744
+    remote_src: True
+
+- name: Install Caddyfile
+  template:
+    owner: "{{caddy_user}}"
+    group: "{{caddy_group}}"
+    src: ../templates/Caddyfile.j2
+    dest: /opt/caddy/Caddyfile
+    mode: "0744"
+
+- name: Install systemd unit
+  template:
+    owner: "{{caddy_user}}"
+    group: "{{caddy_group}}"
+    src: ../templates/Caddy_Service.j2
+    dest: /etc/systemd/system/caddy.service
+    mode: "0744"
+- name: Reloading System D services
+  command: "systemctl daemon-reload"
+#- name: Setting
+#  shell: "sudo setcap CAP_NET_BIND_SERVICE=+eip /etc/caddy/caddy"
+
+- command: "systemctl enable caddy.service"
+- name: Start Caddy
+  service: name=caddy state=started
+...
